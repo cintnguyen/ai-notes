@@ -92,7 +92,9 @@ async function talkToAi(userPrompt) {
     model: "gpt-3.5-turbo",
   });
 
+  // let aiResponse = completion.choices[0].message.content
   let aiResponse = completion.choices[0].message.content
+
   return aiResponse
 }
 
