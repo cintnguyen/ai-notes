@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import Header from "./components/Header"
 import UserInput from "./components/UserInput"
 import NotesDisplay from "./components/NotesDisplay"
-import TextArea from "./components/TextArea"
+import AiTextArea from "./components/AiTextArea"
+import CardTitle from "./components/CardTitle"
 
 export default function App() {
   const [aiResponse, setAiResponse] = useState(null);
+  if (aiResponse) {console.log("aiResponse", aiResponse.message, typeof(aiResponse.message))}
 
   const handleAiResponse = (response) => {
     setAiResponse(response);
@@ -17,7 +19,8 @@ export default function App() {
       <Header />
       <UserInput onAiResponse={handleAiResponse} />
       <NotesDisplay/>
-      <TextArea display={aiResponse}/>
+      <CardTitle display={aiResponse}/>
+      <AiTextArea display={aiResponse}/>
     </div>
   )
 }
