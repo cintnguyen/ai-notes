@@ -6,6 +6,22 @@ import passport from 'passport'
 import session from 'express-session'
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import OpenAI from 'openai'
+import mongoose from 'mongoose'
+import ConversationModel from './models/ConversationModel.js'
+
+console.log("CONVERSATION MODEL", ConversationModel)
+
+
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('Connected to MongoDB');
+})
+.catch((error) => {
+  console.error('Error connecting to MongoDB:', error);
+  process.exit(1)
+});
 
 // Access your API key as an environment variable (see "Set up your API key" above)
 const genAI = new GoogleGenerativeAI(process.env.geminiKey)
@@ -101,8 +117,31 @@ async function talkToAi(userPrompt) {
 app.post("/api", async (req, res) => {
   const text = req.body.text
   const aiResp = await talkToAi(text)
-  console.log(aiResp)
-  res.json({message: aiResp})
+  try {
+    const conversation = new ConversationModel({question : text, answer : aiResp});
+    console.log(conversation)
+
+    await conversation.save();
+    
+    console.log(aiResp)
+    res.json({message: aiResp})
+
+  } catch (error) {
+    console.log("api error", error)
+    res.status(400).send(error);
+  }
+})
+
+app.get("/conversations", async (req, res) => {
+  try {
+    // Use the find() method on your ConversationModel to retrieve all conversations
+    const conversations = await ConversationModel.find();
+    res.json(conversations);
+    
+  } catch (error) {
+    console.error('Error retrieving conversations:', error);
+    throw error; // You can handle or propagate the error as needed
+  }
 })
 
 app.listen(PORT, () => console.log("server running on port: " + PORT))

@@ -14,16 +14,16 @@ export default function CardTitle({display}) {
                     width={40}
                 />
                 <div className="flex flex-col">
-                    <p className="text-md">NextUI</p>
-                    <p className="text-small text-default-500">nextui.org</p>
+                    <p className="text-md">{display ? display.question : ""}</p>
+                    {/* <p className="text-small text-default-500">nextui.org</p> */}
                 </div>
             </CardHeader>
             <Divider />
             <CardBody>
-                <p>{display ? display.message : ""}</p>
+                <p>{display ? display.answer : ""}</p>
             </CardBody>
             <Divider />
-            <CardFooter>
+            {/* <CardFooter>
                 <Link
                     isExternal
                     showAnchorIcon
@@ -31,7 +31,7 @@ export default function CardTitle({display}) {
                 >
                     Visit source code on GitHub.
                 </Link>
-            </CardFooter>
+            </CardFooter> */}
         </Card>
     )
 }

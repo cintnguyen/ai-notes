@@ -25,17 +25,17 @@ export default function NotesDisplay({display}) {
   return (
     <ListboxWrapper>
       <Listbox
-        items={items}
+        items={display}
         aria-label="Dynamic Actions"
         onAction={(key) => alert(key)}
       >
         {(item) => (
           <ListboxItem
-            key={item.key}
-            color={item.key === "delete" ? "danger" : "default"}
-            className={item.key === "delete" ? "text-danger" : ""}
+            key={item._id}
+            // color={item.key === "delete" ? "danger" : "default"}
+            // className={item.key === "delete" ? "text-danger" : ""}
           >
-            {item.label}
+            {item.question}
           </ListboxItem>
         )}
       </Listbox>
