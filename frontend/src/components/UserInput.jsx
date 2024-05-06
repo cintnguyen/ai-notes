@@ -33,7 +33,7 @@ export default function UserInput({ onAiResponse }) {
               className="pb-2 mb-1 fullwidth"
               label="Add note here"
               labelPlacement="inside"
-              placeholder="Start typing your notes..."
+              placeholder="Start typing your question and we'll write your notes..."
               minRows={2}
               maxRows={4}
               value={value}
