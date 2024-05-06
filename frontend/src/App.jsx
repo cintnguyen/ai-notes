@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import Header from "./components/Header"
 import UserInput from "./components/UserInput"
 import NotesDisplay from "./components/NotesDisplay"
-import AiTextArea from "./components/AiTextArea"
 import CardTitle from "./components/CardTitle"
 
 export default function App() {
@@ -56,7 +55,6 @@ export default function App() {
         <CardTitle display={conversation}/>
       )}
       
-      <AiTextArea display={aiResponse}/>
     </div>
   )
 }
