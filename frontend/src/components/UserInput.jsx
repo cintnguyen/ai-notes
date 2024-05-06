@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Textarea, Button } from "@nextui-org/react";
 
-export default function UserInput() {
+export default function UserInput({ onAiResponse }) {
     const [value, setValue] = useState("")
 
     const submitPrompt = async (event) => {
@@ -14,6 +14,7 @@ export default function UserInput() {
         })
 
         const aiAnswer = await response.json()
+        onAiResponse(aiAnswer)
 
         setValue("")
     }
@@ -30,9 +31,9 @@ export default function UserInput() {
         <div>
             <Textarea
               className="pb-2 mb-1 fullwidth"
-              label="Have a question?"
+              label="Add note here"
               labelPlacement="inside"
-              placeholder="Message ResilientGPT..."
+              placeholder="Start typing your question and we'll write your notes..."
               minRows={2}
               maxRows={4}
               value={value}

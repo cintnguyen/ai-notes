@@ -17,7 +17,7 @@ export default function Header() {
         <Navbar style={navStyling} className="resilient-font w-screen">
         <NavbarBrand>
             <img src={Skull} alt="Resilient Coder's trademark skull logo" className="w-12" />
-            <span className="px-1 mx-1">Resilient Ascend</span>
+            <span className="px-1 mx-1">Resilient Ascend Notes AI</span>
         </NavbarBrand>
         <NavbarContent className="flex justify-center">
             {navLinks.map((link) => (
