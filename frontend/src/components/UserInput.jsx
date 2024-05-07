@@ -1,23 +1,8 @@
 import React, { useState } from "react";
 import { Textarea, Button } from "@nextui-org/react";
 
-export default function UserInput({ onAiResponse }) {
-    const [value, setValue] = useState("")
-
-    const submitPrompt = async (event) => {
-        event.preventDefault()
-
-        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({text: value})
-        })
-
-        const aiAnswer = await response.json()
-        onAiResponse(aiAnswer)
-
-        setValue("")
-    }
+export default function UserInput({ submitPrompt }) {
+    const [input, setInput] = useState("")
 
     const buttonStyling = {
         background: "#ed1c24",
@@ -36,8 +21,8 @@ export default function UserInput({ onAiResponse }) {
               placeholder="Start typing your question and we'll write your notes..."
               minRows={2}
               maxRows={4}
-              value={value}
-              onValueChange={setValue}
+              value={input}
+              onValueChange={setInput}
               variant="bordered"  
             />
             <Button
@@ -45,7 +30,10 @@ export default function UserInput({ onAiResponse }) {
                 fullWidth
                 className="mb-2 mt-1"
                 color="primary"
-                onClick={submitPrompt}
+                onClick={() => {
+                    submitPrompt(input); 
+                    setInput("")
+                }}
             >
                 Submit
             </Button>

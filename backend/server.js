@@ -9,8 +9,7 @@ import OpenAI from 'openai'
 import mongoose from 'mongoose'
 import ConversationModel from './models/ConversationModel.js'
 
-console.log("CONVERSATION MODEL", ConversationModel)
-
+const { ObjectId } = mongoose.Types;
 
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
@@ -124,7 +123,7 @@ app.post("/api", async (req, res) => {
     await conversation.save();
 
     console.log(aiResp)
-    res.json({ message: aiResp })
+    res.json(conversation)
 
   } catch (error) {
     console.log("api error", error)
@@ -144,16 +143,15 @@ app.get("/conversations", async (req, res) => {
   }
 })
 
-app.delete('/coversations/:id', async (req, res) => {
+app.delete('/conversations/:id', async (req, res) => {
   try {
     const documentId = req.params.id;
     console.log("HEYY", documentId)
-    
-    const filterQuery = { _id: new ObjectID(documentId) };
-    const collection = database.collection('Conversation'); // Replace 'your_collection_name' with the name of your collection
 
-    const result = await collection.deleteOne(filterQuery);
+    const filterQuery = { _id: new ObjectId(documentId) };
+    const result = await ConversationModel.deleteOne(filterQuery)
 
+    console.log(result)
     // const deleteResult = await deleteDocument('conversations', filterQuery);
 
 

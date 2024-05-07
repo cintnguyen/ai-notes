@@ -5,14 +5,7 @@ import NotesDisplay from "./components/NotesDisplay"
 import CardTitle from "./components/CardTitle"
 
 export default function App() {
-  const [aiResponse, setAiResponse] = useState(null);
   const [conversations, setConversations] = useState([])
-
-  if (aiResponse) {console.log("aiResponse", aiResponse.message, typeof(aiResponse.message))}
-
-  const handleAiResponse = (response) => {
-    setAiResponse(response);
-  }
 
   useEffect(() => {
     // Function to fetch data from the API
@@ -38,23 +31,61 @@ export default function App() {
     };
   }, []); // Empty dependency array means this effect only runs once after the initial render
 
+  const submitPrompt = async (input) => {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text: input})
+    })
 
-  
+    const aiAnswer = await response.json()
+   
+    setConversations([...conversations, aiAnswer])
+
+}
+
+
+  const delConversation = async (id) => {
+    console.log("it's deleting")
+    let url = `http://localhost:8420/conversations/${id}`
+    console.log("URL",url)
+    
+    try {
+        const response = await fetch(url,{
+            method: 'DELETE',
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const jsonData = await response.json();
+        let index = conversations.findIndex(obj => obj._id === id);
+        console.log("FOUND INDEX from ",id, index)
+
+        conversations.splice(index,1)
+        setConversations([...conversations])
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
+
+
 
   return (
     //TODO Chatbox, Chat hx
     <div>
       <Header />
-      <UserInput onAiResponse={handleAiResponse} />
+      <UserInput submitPrompt={submitPrompt}/>
 
-    
-      <NotesDisplay display={conversations}/>
-      
-      
-      {conversations.map(conversation => 
-        <CardTitle display={conversation}/>
-      )}
-      
+
+      <NotesDisplay display={conversations} />
+
+
+      <div className="flex flex-wrap justify-evenly">
+        {conversations.map(conversation =>
+          <CardTitle display={conversation} delConversation={delConversation}/>
+        )}
+      </div>
+
     </div>
   )
 }
